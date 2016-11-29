@@ -1,0 +1,259 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>Pallete.sikuli</h2> <a href="Pallete.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> xlwt
+<span class="kw">import</span> xlrd
+<span class="kw">import</span> sys
+<span class="kw">from</span> xlutils.copy <span class="kw">import</span> copy
+<span class="kw">import</span> datetime
+<span class="kw">import</span> os
+<span class="kw">import</span> xlwt
+
+<span class="cmt">#Creating styles</span>
+
+GreenStyle = xlwt.easyxf(<span class="str">'align: horiz center, vertical center; font: name Calibri, height 220, color green;borders: left thin, right thin, top thin, bottom thin;'</span>)
+RedStyle = xlwt.easyxf(<span class="str">'align: horiz center, vertical center; font: name Calibri, height 220, color red;borders: left thin, right thin, top thin, bottom thin;'</span>)
+NormalStyle = xlwt.easyxf(<span class="str">'align: horiz center, vertical center; font: name Calibri, height 220; borders: left thin, right thin, top thin, bottom thin;'</span>)
+TitlePassedColumnStyle = xlwt.easyxf(<span class="str">'pattern: pattern solid, fore_colour light_yellow; font: name Calibri, height 220, color green, bold 1; align: horiz center, vertical bottom; borders: left thin, right thin, top thin, bottom thin;'</span>)
+TitleDateColumnStyle = xlwt.easyxf(<span class="str">'pattern: pattern solid, fore_colour light_yellow; font: name Calibri, height 220, color black, bold 1; align: horiz center, vertical bottom; borders: left thin, right thin, top thin, bottom thin;'</span>)
+TitleDateColumnStyle.num_format_str = <span class="str">"DD-MMM-YY"</span>
+TitleNoTestPassedColumnStyle = xlwt.easyxf(<span class="str">'pattern: pattern solid, fore_colour light_yellow; font: name Calibri, height 220, color green, bold 1; align: horiz center, vertical bottom; borders: left thin, right thin, top thin, bottom thin;'</span>)
+TitleFailedColumnStyle = xlwt.easyxf(<span class="str">'pattern: pattern solid, fore_colour light_yellow; font: name Calibri, height 220, color red, bold 1; align: horiz center, vertical bottom; borders: left thin, right thin, top thin, bottom thin;'</span>)
+<span class="kw">with</span> xlrd.open_workbook(<span class="str">"/Users/tusharchopra/Desktop/Tushar/Development/Saion/Saion_TestCase_Template.xls"</span>, formatting_info=True, on_demand=True) <span class="kw">as</span> readFileObject:
+
+    r_sheet         = readFileObject.sheet_by_index(<span class="dig">0</span>)
+    writeFileObect  = copy(readFileObject)
+    w_sheet         = writeFileObect.get_sheet(<span class="dig">0</span>)
+
+<span class="cmt">#update header</span>
+    excelCoumns = <span class="str">"F15:F29"</span>
+    todaysDate = datetime.datetime.now().date()
+    w_sheet.write(<span class="dig">7</span>, <span class="dig">3</span>, todaysDate, TitleDateColumnStyle)
+    w_sheet.write(<span class="dig">8</span>, <span class="dig">3</span>, xlwt.Formula(<span class="str">'COUNTIF('</span>+excelCoumns+<span class="str">',"Passed")'</span>), TitlePassedColumnStyle)
+    w_sheet.write(<span class="dig">9</span>, <span class="dig">3</span>, xlwt.Formula(<span class="str">'COUNTIF('</span>+excelCoumns+<span class="str">',"Failed")'</span>), TitleFailedColumnStyle)
+<span class="cmt"># Test Case 1</span>
+
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470676922948.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470677389901.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470677398488.png" />):
+
+        w_sheet.write(<span class="dig">14</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">14</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">14</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+<span class="cmt"># Test Case 2</span>
+
+    <span class="skw">click</span>(<img src="1470676929869.png" />)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470677421089.png" />):
+        w_sheet.write(<span class="dig">15</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">15</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">15</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+    <span class="skw">wait</span>(<span class="dig">2</span>)
+    <span class="skw">click</span>(<img src="1470676987473.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+
+<span class="cmt"># Test Case 3</span>
+
+    <span class="skw">click</span>(<img src="1470677136350.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470677449388.png" />):
+        w_sheet.write(<span class="dig">16</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">16</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">16</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+    <span class="skw">click</span>(<img src="1470676185188.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+
+<span class="cmt"># Test Case 4</span>
+
+    <span class="skw">click</span>(<img src="1470677334068.png" />)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470677508307.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470677550935.png" />):
+        w_sheet.write(<span class="dig">18</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">18</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">18</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+<span class="cmt"># Test Case 5</span>
+
+    <span class="skw">click</span>(<img src="1470677593156.png" />)
+    <span class="skw">find</span>(<img src="1470677768311.png" />)
+    <span class="skw">click</span>(<img src="1470677780475.png" />)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470677990494.png" />):
+        w_sheet.write(<span class="dig">19</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">19</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">19</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+<span class="cmt"># Test Case 6</span>
+
+    <span class="skw">click</span>(<img src="1470678012234.png" />)
+    <span class="skw">wait</span>(<span class="dig">3</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470675956992.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470676044605.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470676053131.png" />)<span class="kw">and</span> <span class="skw">find</span>(<img src="1470676070640.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470676076438.png" />):
+       w_sheet.write(<span class="dig">20</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+       w_sheet.write(<span class="dig">20</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">20</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+<span class="cmt"># Test Case 7</span>
+
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470675956992.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470676044605.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470676053131.png" />)<span class="kw">and</span> <span class="skw">find</span>(<img src="1470676070640.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470676076438.png" />):
+        w_sheet.write(<span class="dig">22</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">22</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">22</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>)
+
+<span class="cmt"># Test Case 8</span>
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470675980427.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470675988231.png" />):
+        w_sheet.write(<span class="dig">23</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">23</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">23</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+<span class="cmt"># Test Case 9</span>
+
+    <span class="skw">click</span>(<img src="1470676098167.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470677449388.png" />):
+        w_sheet.write(<span class="dig">24</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">24</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">24</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+    <span class="skw">click</span>(<img src="1470676185188.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+
+<span class="cmt"># Test Case 10</span>
+
+    <span class="skw">click</span>(<img src="1470676220551.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470764275066.png" />):
+        w_sheet.write(<span class="dig">25</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">25</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">25</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+    <span class="skw">click</span>(<img src="1470676185188.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+
+<span class="cmt"># Test Case 11</span>
+
+    <span class="skw">click</span>(<img src="1470676318709.png" />)
+    <span class="skw">wait</span>(<span class="dig">5</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470764421742.png" />):
+         w_sheet.write(<span class="dig">26</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+         w_sheet.write(<span class="dig">26</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+         w_sheet.write(<span class="dig">26</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+
+
+    <span class="skw">click</span>(<img src="1470676185188.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+
+<span class="cmt"># Test Case 12</span>
+
+    <span class="skw">click</span>(<img src="1470676392372.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470764517723.png" />):
+        w_sheet.write(<span class="dig">27</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">27</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">27</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+    <span class="skw">click</span>(<img src="1470676185188.png" />)
+
+    <span class="cmt"># Test Case 13</span>
+
+    <span class="skw">click</span>(<img src="1470676871384.png" />)
+    <span class="skw">wait</span>(<span class="dig">1</span>)
+    <span class="kw">if</span> <span class="skw">find</span>(<img src="1470676922948.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470677389901.png" />) <span class="kw">and</span> <span class="skw">find</span>(<img src="1470677398488.png" />):
+
+        w_sheet.write(<span class="dig">28</span>, <span class="dig">4</span>, <span class="str">"Yes"</span>, NormalStyle)
+        w_sheet.write(<span class="dig">28</span>, <span class="dig">5</span>, <span class="str">"Passed"</span>, GreenStyle)
+
+    <span class="kw">else</span>:
+        w_sheet.write(<span class="dig">28</span>, <span class="dig">5</span>, <span class="str">"Failed"</span>, RedStyle)
+    writeFileObect.save(<span class="str">"/Users/tusharchopra/Desktop/Saion_TestCase_Template1.xls"</span>)
+    exit()
+</pre>
+</body>
+</html>
